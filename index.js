@@ -6,6 +6,7 @@ const app = express();
 const port = 3010;
 
 app.use(express.static('static'));
+app.use(express.json)
 
 app.get('/', (req, res) => {
   res.send('hellow the worldo');
@@ -26,14 +27,14 @@ app.post('/createitem',(req,res)=>{
   res.json("Created")
 })
 
-app.get('/items',(req,res)=>{
+app.get('/items', async (req, res) => {
   try {
-    const items = await MenuItem.find({});
+    const items = await MenuItem.find({}); // ✅ Add "await"
     res.json(items);
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch items', details: error.message });
   }
-})
+});
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
